@@ -4,31 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat App</title>
-    <style>
-        /* Your CSS styles here */
-    </style>
 </head>
 <body>
     <div id="messages"></div>
     <input id="message-input" type="text" placeholder="Type your message...">
     <button id="send-button">Send</button>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
-        const socket = new WebSocket('ws://' + location.hostname + ':8765');
+        var socket = io();
 
         document.getElementById('send-button').addEventListener('click', function() {
-            const messageInput = document.getElementById('message-input');
-            const message = messageInput.value;
-            socket.send(message);
+            var messageInput = document.getElementById('message-input');
+            var message = messageInput.value;
+            socket.emit('message', message);
             messageInput.value = '';
         });
 
-        socket.onmessage = function(event) {
-            const messagesDiv = document.getElementById('messages');
-            const messageElement = document.createElement('div');
-            messageElement.textContent = event.data;
+        socket.on('message', function(message) {
+            var messagesDiv = document.getElementById('messages');
+            var messageElement = document.createElement('div');
+            messageElement.textContent = message;
             messagesDiv.appendChild(messageElement);
-        };
+        });
     </script>
 </body>
 </html>
