@@ -13,23 +13,22 @@
     <input id="message-input" type="text" placeholder="Type your message...">
     <button id="send-button">Send</button>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
-        var socket = io();
+        const socket = new WebSocket('ws://' + location.hostname + ':8765');
 
         document.getElementById('send-button').addEventListener('click', function() {
-            var messageInput = document.getElementById('message-input');
-            var message = messageInput.value;
-            socket.emit('message', message);
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value;
+            socket.send(message);
             messageInput.value = '';
         });
 
-        socket.on('message', function(message) {
-            var messagesDiv = document.getElementById('messages');
-            var messageElement = document.createElement('div');
-            messageElement.textContent = message;
+        socket.onmessage = function(event) {
+            const messagesDiv = document.getElementById('messages');
+            const messageElement = document.createElement('div');
+            messageElement.textContent = event.data;
             messagesDiv.appendChild(messageElement);
-        });
+        };
     </script>
 </body>
 </html>
