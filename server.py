@@ -16,5 +16,10 @@ def handle_connect():
 def handle_disconnect():
     print('Client disconnected')
 
+@socketio.on('message')
+def handle_message(message):
+    # Broadcast the received message to all connected clients
+    send(message, broadcast=True)
+    
 if __name__ == '__main__':
     socketio.run(app, debug=True)
