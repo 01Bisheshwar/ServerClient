@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from flask_socketio import SocketIO, send, emit
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -15,12 +15,6 @@ def handle_connect():
 @socketio.on('disconnect')
 def handle_disconnect():
     print('Client disconnected')
-
-@socketio.on('message')
-def handle_message(message):
-    print('received message: ' + message)
-    # Broadcast the received message to all connected clients
-    send(message, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
