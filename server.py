@@ -19,7 +19,6 @@ def handle_disconnect():
 @socketio.on('message')
 def handle_message(message):
     print('received message: ' + message)
-    socketio.emit('message', message, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
